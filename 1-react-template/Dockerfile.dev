@@ -10,8 +10,11 @@ COPY --chown=app:app package.json pnpm-lock.yaml ./
 
 RUN npm i -g pnpm
 
-# ensure to set the volumes for the pnpm store
-RUN pnpm set store-dir /usr/src/app/.pnpm-store && pnpm install
+# Ensure to set the volumes for the pnpm store
+RUN pnpm config set store-dir /usr/src/app/.pnpm-store
+
+# Install dependencies
+RUN pnpm install
 
 COPY --chown=app:app . ./
 # (or) COPY . ./; RUN chown -R app:app ./ 
