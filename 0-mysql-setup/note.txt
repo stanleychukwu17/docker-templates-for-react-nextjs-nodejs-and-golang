@@ -1,0 +1,6 @@
+1. docker-compose up:
+    This command will start the different services, if necessary, it will download the images before starting the containers
+2. 2. On your browser:
+    Head over to http://localhost:8080/ - this is the phpMyAdmin route
+    username: root {this is the default username, if you want to change it, you can ask chatGPT}
+    password: root {it is the password from config: MYSQL_ROOT_PASSWORD: root }

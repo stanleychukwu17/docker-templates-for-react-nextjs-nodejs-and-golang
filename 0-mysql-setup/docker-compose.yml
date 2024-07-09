@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  mysql_db:
+    image: mysql:8.0-bullseye
+    container_name: mysql_db_container
+    restart: always
+    environment:
+      - MYSQL_DATABASE=test_db
+      - MYSQL_USER=stanley
+      - MYSQL_PASSWORD=test12345
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - D:/.mysql_data:/var/lib/mysql
+  
+  phpmyadmin:
+    image: phpmyadmin:5.2.1-apache
+    container_name: phpmyadmin_container
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql_db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql_server
