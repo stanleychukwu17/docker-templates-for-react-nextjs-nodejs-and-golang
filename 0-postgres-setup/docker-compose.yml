@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  postgres_db:
+    container_name: postgres_container
+    image: postgres:16.3-alpine3.20
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_db
+    volumes:
+      - D:/.pgdata:/var/lib/postgresql/data
+  pg_admin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4:8.8
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@test.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgres_db
+    ports:
+      - "5050:80"

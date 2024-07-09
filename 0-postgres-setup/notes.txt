@@ -1,0 +1,20 @@
+1. docker-compose up:
+    This command will start the different services, if necessary, it will download the images before starting the containers
+2. On your browser:
+    Head over to http://localhost:5050/ - this is the pgAdmin route
+    PgADMIN_DEFAULT_EMAIL: test@test.com
+    PgADMIN_DEFAULT_PASSWORD: password
+3. Once logged into your pg admin:
+    hover over the {server} and right click > Register > server
+    [tab=General] :
+        Name: Enter any name you want, teacher used "docker-server"
+    [tab=Connection] :
+        Host name/ address: use the <service_name> you used in the docker-compose-file, in this case: "postgres_db",
+        if it does not work, then use the below:
+        {
+            The other teacher used the i.p address of the container as the hostname, you can get the ip address by doing:
+            docker inspect <containerID> or <containerName> | grep -i IPAddress
+            his IPAddress was: 172.21.0.3
+        }
+        Username: <POSTGRES_USER>, in this case: "postgres"
+        Password: <POSTGRES_DB>, in this case: "password"
