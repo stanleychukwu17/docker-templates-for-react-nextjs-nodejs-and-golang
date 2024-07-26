@@ -1,0 +1,62 @@
+# Stage 1: Build the application
+FROM golang:alpine as build
+
+# Add user and group
+RUN addgroup -S stanley && adduser -S -G stanley stanley
+
+# Switch to the stanley user
+USER stanley
+
+# Set the working directory
+WORKDIR /app
+
+# Mount a volume to cache Go modules
+VOLUME /go/pkg/mod
+# remember to setup the volumes in you docker-compose.yml, the above line is just to let docker know where to mount the volume
+#   services:
+#       my_service:
+#           image: my_golang_image
+#           volumes:
+#             - gomod_cache:/go/pkg/mod
+#             - go_cache_build:/root/.cache/go-build
+#       volumes:
+#         gomod_cache:
+#         go_cache_build:
+
+# Copy go.mod and go.sum files to the workspace
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+# the teacher replaced the above in his lecture with the below, this his own method of caching the dependencies; but even chatGPT recommends a named volume to manage the cache
+#   RUN --mount=type=cache,target=/go/pkg/mod \
+#       --mount=type=cache,target=/root/.cache/go-build\
+#       go mod download
+
+# Copy the source code
+COPY --chown=stanley:stanley . ./
+
+# Build the application
+RUN go build \
+    -ldflags "-linkmode external -extldflags -static" \
+    -tags netgo \
+    -o api-golang
+
+###
+# Stage 2: Create the minimal image
+FROM scratch
+
+# Set the environment variable for Gin mode
+ENV GIN_MODE=release
+
+# Copy the /etc/passwd file from the build stage
+COPY --from=build /etc/passwd /etc/passwd
+
+# Copy the built binary from the build stage
+COPY --chown=stanley:stanley --from=build /app/api-golang api-golang
+
+# Expose the application port
+EXPOSE 8080
+
+# Run the binary
+ENTRYPOINT ["./api-golang"]

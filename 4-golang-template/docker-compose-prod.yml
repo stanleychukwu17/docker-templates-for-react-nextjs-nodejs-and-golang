@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  my_service:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    image: my_golang_image
+    volumes:
+      - gomod_cache:/go/pkg/mod
+      - go_cache_build:/root/.cache/go-build
+    ports:
+      - "8080:8080"
+
+volumes:
+  gomod_cache:
+  go_cache_build:
