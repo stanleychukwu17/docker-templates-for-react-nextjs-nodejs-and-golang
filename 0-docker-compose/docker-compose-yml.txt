@@ -7,7 +7,7 @@ services: -{Object}
         or you can also do
         build:
             context: ./frontend
-            dockerfile: Dockerfile.prod
+            dockerfile: Dockerfile.prod (or) Dockerfile.dev
 
         container_name: <name_of_container>
         restart: always                         {
