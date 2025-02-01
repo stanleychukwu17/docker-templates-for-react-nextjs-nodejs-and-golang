@@ -10,7 +10,7 @@ services: -{Object}
             dockerfile: Dockerfile.prod (or) Dockerfile.dev
 
         container_name: <name_of_container>
-        restart: always                         {
+        restart: always {
             The restart: always directive in Docker Compose specifies a restart policy for a container. When set to always, it means that Docker will automatically restart the container if it stops for any reason, such as a crash or manual stop.
 
             Here's what restart: always does:
@@ -19,6 +19,19 @@ services: -{Object}
             3. Fault Tolerance: Helps maintain service continuity by quickly recovering from failures without manual intervention.
 
             This option is commonly used for critical services or those that need to be highly available. However, it's important to note that using restart: always can mask underlying issues, so it's essential to monitor the container's behavior and investigate the cause of frequent restarts if they occur.
+
+            other options are:
+            restart: no
+                This means Docker will not restart the container automatically if it stops.
+                Useful if you want to control the container lifecycle manually.
+            restart: on-failure
+                Docker will restart the container only if it exits with a non-zero exit code (indicating an error). You can also specify a maximum number of restart attempts.
+                Helps to avoid endless restarts in case of persistent failure.
+                -
+                restart: on-failure:5 - This will restart the container up to 5 times if it fails.
+            restart: unless-stopped
+                The container will restart unless explicitly stopped by the user. This means Docker will keep trying to restart it if it crashes, unless you manually stop the container.
+                Similar to always, but with the option to manually stop it without Docker trying to restart it.
         }
     
         depends_on: -[Array]
@@ -56,7 +69,8 @@ services: -{Object}
         networks:                               {if you want to use a custom network}
             - <myNetwork>
 
-        command: ./docker-entrypoint.sh         {The command runs once the container has been started}
+        command: ./docker-entrypoint.sh         {The command runs once the container has been started, it is the same with CMD in your Dockerfile, this will override your CMD command}
+        entrypoint: ./docker-entrypoint.sh      {it is same as using ENTRYPOINT in your Dockerfile, this will override your entrypoint command}
 
         stdin_open: true                        {if true, a bash/sh terminal will be open separately for this container}
         tty: true                               {if true, the above terminal opened will be interactive and will be able to take input and return outputs}
