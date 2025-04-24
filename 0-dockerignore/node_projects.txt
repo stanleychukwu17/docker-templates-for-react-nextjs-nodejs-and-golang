@@ -44,3 +44,8 @@ tmp/
 *.key
 *.crt
 *.env
+
+# tests
+tests/
+test/
+__test__/
