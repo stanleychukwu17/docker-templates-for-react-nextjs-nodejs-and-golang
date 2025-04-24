@@ -21,6 +21,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+
   roach:
     image: cockroachdb/cockroach:latest-v20.1
     container_name: roach
