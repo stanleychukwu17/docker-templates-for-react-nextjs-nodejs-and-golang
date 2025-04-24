@@ -39,3 +39,8 @@ tmp/
 *.pem
 *.key
 *.crt
+
+# tests
+tests/
+test/
+__test__/
