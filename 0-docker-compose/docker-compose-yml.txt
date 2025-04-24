@@ -1,6 +1,6 @@
 version: "3.8" {depending on your docker engine}
-services: -{Object}
-    <name_of_service>: -{Object}
+services:
+    <name_of_service>:
         image: postgres:16.3-alpine3.20
 
         build: ./backend or ./server
