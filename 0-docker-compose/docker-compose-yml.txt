@@ -11,14 +11,16 @@ services:
 
         container_name: <name_of_container>
         restart: always {
-            The restart: always directive in Docker Compose specifies a restart policy for a container. When set to always, it means that Docker will automatically restart the container if it stops for any reason, such as a crash or manual stop.
+            The restart: always directive in Docker Compose specifies a restart policy for a container. When set to always, it means that Docker will automatically restart the container if it stops for any reason,
+            such as a crash or manual stop.
 
             Here's what restart: always does:
             1. Automatic Restart: If the container stops for any reason, Docker automatically restarts it.
             2. High Availability: Ensures high availability of the service by automatically bringing it back online in case of failure.
             3. Fault Tolerance: Helps maintain service continuity by quickly recovering from failures without manual intervention.
 
-            This option is commonly used for critical services or those that need to be highly available. However, it's important to note that using restart: always can mask underlying issues, so it's essential to monitor the container's behavior and investigate the cause of frequent restarts if they occur.
+            This option is commonly used for critical services or those that need to be highly available. However, it's important to note that using restart: always can mask underlying issues, so it's essential to
+            monitor the container's behavior and investigate the cause of frequent restarts if they occur.
 
             other options are:
             restart: no
@@ -34,23 +36,23 @@ services:
                 Similar to always, but with the option to manually stop it without Docker trying to restart it.
         }
     
-        depends_on: -[Array]
+        depends_on:
             - db
             - backend
 
-        ports: -[Array]
+        ports:
             - "4000:4000" or "8080:3000"
 
-        volumes: -[Array]
+        volumes:
             - ./api:/app                        {binding mount for live changes}
             - ./logs:/app/logs                  {binding mount for storing data}
             - users-data:/app/data/users-data   {named volume for storing users data}
 
-        environment: -{Object}
+        environment:
             POSTGRES_USER: <username>
             POSTGRES_PASSWORD: <password>
             POSTGRES_DB: <database>
-            or an [Array]
+            or
             - POSTGRES_USER=<username>
             - POSTGRES_PASSWORD=<password>
             - POSTGRES_DB=<database>
@@ -59,12 +61,8 @@ services:
         env_file:                               # if you prefer using the .env file for environment variables, you can do the below:
             - ./backend/.env                    {i.e <path_to_the_env_file>}
 
-        hostname: <name_of_service> or <your_own_custom_name> {if you do not specify a hostname, docker will use <name_of_service> as the default hostname}
-        NOTE: no need for a hostname - here is what docker has to say about it:
-            That makes sense not to add a hostname. If Docker Compose's has automatic service name resolution, it simplifies the configuration and avoids the need for manually specifying hostname's.
-            Here’s a brief summary of how Docker Compose handles service names and networking by default:
-            1. Service Names as Hostname: Docker Compose automatically uses the service name as the hostname for inter-service communication. For example, if you have services named web and db, they can communicate using these names directly.
-            2. Built-in DNS: Docker Compose sets up a default network for your services and includes DNS resolution. This allows services to refer to each other by name.
+        hostname: <container_name> or <name_of_service> or <your_own_custom_name> {if you do not specify a hostname, docker will use <name_of_service> as the default hostname}
+            : best practice to use "container_name" for the "hostname"
 
         networks:                               {if you want to use a custom network}
             - <myNetwork>
@@ -75,9 +73,6 @@ services:
         stdin_open: true                        {if true, a bash/sh terminal will be open separately for this container}
         tty: true                               {if true, the above terminal opened will be interactive and will be able to take input and return outputs}
 
-        deploy:                                 {i know nothing about this for now, but later on, i will research on the topic and provide you a more detailed explanation}
-            restart_policy:
-                condition: on-failure
 volumes:
     users-data:
     {
