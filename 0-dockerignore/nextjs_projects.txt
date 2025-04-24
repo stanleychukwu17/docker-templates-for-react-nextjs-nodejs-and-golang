@@ -15,6 +15,7 @@ pnpm-debug.log
 
 # Build output and cache
 .next/
+.next/cache
 out/
 build/
 *.log
@@ -40,3 +41,8 @@ tmp/
 *.pem
 *.key
 *.crt
+
+# tests
+tests/
+test/
+__test__/
