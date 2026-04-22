@@ -5,6 +5,9 @@ services:
     image: redis:7.2.13-alpine
     container_name: redis
     hostname: redis
+    env_file:
+      - .env
+      - .env.local
     ports:
       - "6379:6379"
     volumes:
@@ -12,6 +15,7 @@ services:
     restart: unless-stopped
     networks:
       - redis-network
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
 
 networks:
   redis-network:
